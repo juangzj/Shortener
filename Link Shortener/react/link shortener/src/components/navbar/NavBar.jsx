@@ -5,9 +5,29 @@ import './NavBar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import logo from '../../../public/imgs/shortLink-logo.png';
+import { useNavigate } from 'react-router-dom'; // useNavigate import to manage routes
+
 
 
 function NavBar() {
+
+  const navigate = useNavigate(); // navigate instance
+
+  /**
+   * Function to redirect to the Login page
+   */
+  const handleLoginClick = () => {
+    navigate('/Login')
+  }
+
+  /**
+   * Function to redirect to the Register page
+   */
+  const handleRegisterClick = () => {
+    navigate('/Register')
+  }
+
+
 
   return (
     <>
@@ -21,13 +41,13 @@ function NavBar() {
               height="35"
               className="d-inline-block align-top"
             />{' '}
-            ACORTADOR
+            SHORTENER
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Button variant="light">INGRESAR</Button>
-              <Button variant="dark">REGISTRASE</Button>
+              <Button variant="light" onClick={handleLoginClick} >LOG IN </Button>
+              <Button variant="dark" onClick={handleRegisterClick} >LOG UP</Button>
               <Nav.Link href="#pricing">ES</Nav.Link>
             </Nav>
           </Navbar.Collapse>
