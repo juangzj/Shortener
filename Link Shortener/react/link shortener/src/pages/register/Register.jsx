@@ -1,39 +1,46 @@
 import { useState } from 'react';
 import './Register.css';
+import axios from 'axios'; //axios import
+import { useNavigate } from 'react-router-dom';
+
+const URI = 'http://localhost:5000/shortener/users/createUser'
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-  });
 
-  const [message, setMessage] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
+  /**
+   * method to create a new user with axios
+   * @param {*} e 
+   */
+  const newUser = async (e) => {
     e.preventDefault();
-    // Simularemos una respuesta exitosa por ahora
-    setMessage('Registration successful!');
-  };
+    try {
+      await axios.post(URI, { username: username, email: email, password: password })
+      navigate('/login')
+    } catch (error) {
+      console.log(error);
+      alert("Error, the user could not be created")
+    }
+
+  }
 
   return (
     <div className="register-container">
       <div className="register-form">
         <h2>Register</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={newUser}>
           <div className="form-group">
             <label htmlFor="username">Username:</label>
             <input
               type="text"
               id="username"
               name="username"
-              value={formData.username}
-              onChange={handleChange}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
@@ -43,8 +50,8 @@ const Register = () => {
               type="email"
               id="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -54,14 +61,13 @@ const Register = () => {
               type="password"
               id="password"
               name="password"
-              value={formData.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
           <button type="submit">Register</button>
         </form>
-        {message && <p>{message}</p>}
       </div>
     </div>
   );
